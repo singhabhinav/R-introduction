@@ -25,6 +25,7 @@ c(1,2,3,4) + c(0,10)
 
 # P5- Get working directory and set working directory
 getwd()
+setwd("/home/abhinav/R-introduction/r_intro")
 
 # P6- list all objects in the workspace
 ls()
@@ -46,8 +47,8 @@ rep(c(1,2,3), each=25)
 
 #P10- Reading data
 
-cars <- read.csv("cars_data.csv")
-View(c)
+cars <- read.csv("cars.csv")
+View(cars)
 
 # P11- Subsetting dataframe
 
@@ -89,18 +90,12 @@ min(MPG)
 max(MPG)
 quantile(MPG, seq(0,1,0.05))
 
-#Correlations
-
-newcars <- cars[, c("MPG", "Cylinders", "Engine.Disp", "Horsepower")]
-cor(newcars, use="complete.obs", method="pearson") 
-cor(newcars$MPG, newcars$Weight)
-
 # Count of cars by Origin
 library(plyr) # install.packages("plyr")
 count(cars, 'Origin')
 
 # Write the output to Excel (csv) file. 
-write.csv(count(cars, 'Origin'), "Countsheet.csv")
+write.csv(count(cars, 'Origin'), "countsheet.csv")
 
 # Means, max, min by Origin
 

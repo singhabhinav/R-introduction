@@ -1,6 +1,81 @@
-# Practice1- Find out the difference between 689 and 53 using R as a calculator
+# P1
 
-689-53
+# An addition
+5 + 5
+
+# A subtraction
+5 - 5
+
+# A multiplication
+3 * 5
+
+# A division
+(5 + 5) / 2
+
+# Exponentiation
+
+2^5
+
+# Modulo
+
+28 %% 6
+
+#P2
+
+# Assign the value 42 to x
+x <- 42
+
+# Print out the value of the variable x
+x
+
+#P3 Variable assignment (2)
+
+# Assign the value 5 to the variable my_apples
+
+my_apples <- 5
+
+
+# Print out the value of the variable my_apples
+
+my_apples
+
+#P4 Variable assignment (3)
+
+# Assign a value to the variables my_apples and my_oranges
+my_apples <- 5
+my_oranges <- 6
+
+# Add these two variables together
+my_apples + my_oranges
+
+# Create the variable my_fruit
+my_fruit <- my_apples + my_oranges
+
+# Basic data types in R
+
+# Decimals values like 4.5 are called numerics.
+# Natural numbers like 4 are called integers. Integers are also numerics.
+# Boolean values (TRUE or FALSE) are called logical.
+# Text (or string) values are called characters.
+
+# What's that data type?
+
+my_numeric <- 42
+my_character <- "universe"
+my_logical <- FALSE
+class(my_numeric)
+class(my_character)
+class(my_logical)
+
+# Create a vector
+
+# Vectors are one-dimension arrays that can hold numeric data, character data, or logical data.
+# In other words, a vector is a simple tool to store data.
+# For example, you can store your daily gains and losses in the casinos.
+
+numeric_vector <- c(1, 2, 3)
+character_vector <- c("a", "b", "c")
+
 
 # P2- Assign values to variables and do computation
 
@@ -56,7 +131,7 @@ newcars1 <- cars[1:10,1:3]
 newcars2 <- cars[1:10, c(1,8,9)]
 newcars3 <- cars[1:10, c("Origin", "Year")]
 
-# P12 - Find rows with max, min etc. 
+# P12 - Find rows with max, min etc.
 
 newcars4<- cars[which.max(cars$MPG),]
 newcars5<- cars[cars$MPG == max(cars$MPG),]
@@ -94,7 +169,7 @@ quantile(MPG, seq(0,1,0.05))
 library(plyr) # install.packages("plyr")
 count(cars, 'Origin')
 
-# Write the output to Excel (csv) file. 
+# Write the output to Excel (csv) file.
 write.csv(count(cars, 'Origin'), "countsheet.csv")
 
 # Means, max, min by Origin

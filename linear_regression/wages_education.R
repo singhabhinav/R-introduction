@@ -15,3 +15,8 @@ predict(fit, new_data)
 
 plot(Education, Wages)
 abline(fit)
+
+# Plot Residual
+res = resid(fit)
+plot(Education, res)
+abline(0,0)

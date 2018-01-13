@@ -24,10 +24,10 @@ accessURL <- 'https://api.twitter.com/oauth/access_token'
 authURL <- 'https://api.twitter.com/oauth/authorize'
 
 ### Twitter Application
-consumerKey="xxxxxxxxxxxxxxxxx" #Replace with your consumerKey
-consumerSecret="xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx" #Replace with your consumerSecret
-accesstoken="xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx" #Replace with your accesstoken
-accesssecret="xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx" #Replace with your accesssecret
+consumerKey="xxxxxxx" #Replace with your consumerKey
+consumerSecret="xxxxxx" #Replace with your consumerSecret
+accesstoken="xxxxxxx" #Replace with your accesstoken
+accesssecret="xxxxxx" #Replace with your accesssecret
 
 Cred <- OAuthFactory$new(consumerKey=consumerKey,
                          consumerSecret=consumerSecret,
@@ -39,13 +39,34 @@ Cred$handshake(cainfo = system.file('CurlSSL', 'cacert.pem', package = 'RCurl'))
 ##### Authorization PIN -DYNAMIC
 
 
-load('twitter authentication.Rdata') 
+#load('twitter authentication.Rdata')
 #Once you launch the code first time, you can start from this line in the future (libraries should be connected)
 
 setup_twitter_oauth(consumer_key=consumerKey, consumer_secret=consumerSecret, access_token =accesstoken, access_secret = accesssecret )
 
+##****************Step 3: Find trending topics************************************
 
-##****************Step 3: Perform tweets extraction and data cleaning****************
+# Return data frame with name, country & woeid
+# woeid - Where On Earth IDentifier - 32-bit unique identifier
+
+trend_locations <- availableTrendLocations()
+
+# Get Country
+
+trend_country = subset(trend_locations, country == "India")
+
+# Get City's woeid
+
+city_woeid = subset(trend_country, name == "Lucknow")$woeid
+
+# Get trending topics in city
+
+trends = getTrends(woeid=city_woeid)
+
+head(trends)
+
+
+##****************Step 4: Perform tweets extraction and data cleaning****************
 
 # Harvest some tweets
 
@@ -77,7 +98,7 @@ some_txt3 = gsub("@\\w+", "", some_txt2)
 
 some_txt4 = gsub("[[:punct:]]", " ", some_txt3)
 
-# Cleaning 5- remove Punctuations 
+# Cleaning 5- remove alphanumeric words
 
 some_txt5 = gsub("[^[:alnum:]]", " ", some_txt4)
 

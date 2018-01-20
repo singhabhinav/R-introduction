@@ -61,11 +61,12 @@ zoom<- min(MaxZoom(range(lat), range(lon)));
 Map <- GetMap(center=center,zoom=zoom,markers=paste0("&markers=color:blue|label:B|","51.5007292,-0.1246254&markers=color:green|label:D|51.5033635,-0.1276248&markers=","color:red|color:red|label:L|51.503324,-0.119543"));
 PlotOnStaticMap(Map)
 
-library(httr)
-url1 <- "https://en.wikipedia.org/wiki/List_of_countries_and_dependencies_by_population"
-tabs <- GET(url1)
-tabs <- readHTMLTable(rawToChar(tabs$content), stringsAsFactors = F)
-tabs
-class(tabs)
-#tablecontent<- tabs$'NULL'
-head(tabs, 10)
+geodata<- read.csv("mining_other_social_media_websites/geodata.csv")
+head(geodata)
+
+center = c(mean(geodata$latitude), mean(geodata$longitude));
+map<- GetMap(center=center,zoom=3,size=c(480,480),destfile="mining_other_social_media_websites/meuse.png",maptype="mobile",SCALE = 1);
+par(cex=1)
+
+bubbleMap(geodata,coords = c("longitude", "latitude"),map=map,zcol='comments_count',key.entries = 100+ 100 * 2^(0:4))
+

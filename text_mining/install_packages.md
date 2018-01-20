@@ -26,6 +26,12 @@
 
 `syuzhet`
 
+### Install Rtools for your R version
+
+https://cran.r-project.org/bin/windows/Rtools/
+
+Do not forget to check the system path checkbox during installation
+
 ### Now install below packages in R Console
 
 `install.packages("ftp://cran.r-project.org/pub/R/src/contrib/Archive/Rstem/Rstem_0.4-1.tar.gz", repos = NULL, type="source", dependencies=TRUE)`

@@ -1,3 +1,5 @@
+# Install SocialMediaMineR
+
 install.packages("SocialMediaMineR")
 
 # Searching on Social Media
@@ -5,9 +7,15 @@ install.packages("SocialMediaMineR")
 library(SocialMediaMineR)
 library(XML)
 
+# Search on facebook
+
 fb_results <- get_facebook("http://www.bbc.com/")
 
+# Search on Pinterest
+
 pinterest_results <- get_pinterest("http://www.bbc.com/")
+
+# Search on Reddit
 
 reddit_results <- get_reddit("http://www.bbc.com/")
 
@@ -35,7 +43,6 @@ news_urls<- c(
 allresults<- get_socialmedia(news_urls, sleep.time = 0)
 allresults
 
-
 # Use Google Maps
 
 install.packages("RgoogleMaps")
@@ -60,13 +67,3 @@ center = c(mean(lat), mean(lon));
 zoom<- min(MaxZoom(range(lat), range(lon)));
 Map <- GetMap(center=center,zoom=zoom,markers=paste0("&markers=color:blue|label:B|","51.5007292,-0.1246254&markers=color:green|label:D|51.5033635,-0.1276248&markers=","color:red|color:red|label:L|51.503324,-0.119543"));
 PlotOnStaticMap(Map)
-
-geodata<- read.csv("mining_other_social_media_websites/geodata.csv")
-head(geodata)
-
-center = c(mean(geodata$latitude), mean(geodata$longitude));
-map<- GetMap(center=center,zoom=3,size=c(480,480),destfile="mining_other_social_media_websites/meuse.png",maptype="mobile",SCALE = 1);
-par(cex=1)
-
-bubbleMap(geodata,coords = c("longitude", "latitude"),map=map,zcol='comments_count',key.entries = 100+ 100 * 2^(0:4))
-

@@ -2,6 +2,7 @@
 
 # Generate token https://developers.facebook.com/tools/explorer
 
+# Install packages
 
 install.packages("devtools")
 library(devtools)
@@ -34,52 +35,115 @@ likes<- getLikes(user="me", token=token)
 
 head(likes)
 
+# Trend analysis
 
-network<- getNetwork(token, format="adj.matrix")
-
-require(igraph)
-
-social_graph<- graph.adjacency(network)
-layout<- layout.drl(social_graph,
-                    options=list(simmer.attraction=0))
-
-plot(social_graph, vertex.size=10, vertex.color="green",
-     edge.arrow.size=0, edge.curved=TRUE,
-     layout=layout.fruchterman.reingold)
-
-degree(social_graph, v=V(social_graph), mode =
-         c("all", "out", "in", "total"),loops = TRUE, normalized = FALSE)
-degree.distribution(social_graph, cumulative = FALSE)
+## Get page data
 
 page<- getPage("TED", token, n = 50)
 
 head(page, n=2)
 
-page[which.max(page$likes_count), ]
+## Get the detail about the post which had the maximum number of likes
+
+max_liked_post = page[which.max(page$likes_count), ]
+
+## Most trending topics
 
 page<- getPage("TED", token, n = 500)
 
+## Filter the most recent posts
+
 pageRecent<- page[which(page$created_time> "2017-12-01"), ]
+
+## Order by likes
+
 top<- pageRecent[order(- pageRecent$likes),]
-colnames(top)
 
 View(top)
 
+# Find Influencers based on single post
 
+## find the top post 
 post_id<- head(page$id, n = 1)
+
+## Get comment and likes in the top post
 post<- getPost(post_id, token, n = 1000, likes = TRUE,
                comments = TRUE)
 
 View(post$comments)
 head(post$comments, n=2)
 
+
 library(sqldf)
 comments <- post$comments
+
+## Find users and number of likes they received
 influentialusers<- sqldf("select from_name, sum(likes_count)
                          as totlikes from comments group by from_name")
-head(Infusers)
-head(Infusers)
+influentialusers
+
+## Convert likes to numeric
 influentialusers$totlikes<- as.numeric(influentialusers$totlikes)
-# Sorting the users based on the number of likes they received
+
+## Sorting the users based on the number of likes they received
 top<- influentialusers[order(- influentialusers$totlikes),]
 View(top)
+
+# Find Influencers based on multiple post
+
+## Get top 100 posts
+
+post_id<- head(page$id, n = 100)
+head(post_id, n=10)
+post_id<- as.matrix(post_id)
+
+## Collecting 1000 the commments from all the 100 posts
+allcomments<- ""
+for (i in 1:nrow(post_id))
+{
+  # Get upto 1000 comments for each post
+  post<- getPost(post_id[i,], token, n = 1000,
+                 likes = TRUE, comments = TRUE)
+  comments<- post$comments
+  ## Append the comments to a single data frame
+  allcomments<- rbind(allcomments, comments)
+}
+
+## Consolidating the like for each user.
+influentialusers<- sqldf("select from_name, sum(likes_count) as
+                         totlikes from allcomments group by from_name")
+influentialusers$totlikes<- as.numeric(influentialusers$totlikes)
+top<- influentialusers[order(- influentialusers$totlikes),]
+head(top, n=20)
+
+# Measuring CTR performance for a page
+
+## Convert Facebook date format to R-supported date format
+format.facebook.date<- function(datestring) {
+  date<- as.POSIXct(datestring,
+  format = "%Y-%m-%dT%H:%M:%S+0000", tz = "GMT")
+}
+
+## Function to aggregate data(likes, comments and shares) on monthly basis
+aggregate.metric<- function(metric) {
+  m<- aggregate(page[[paste0(metric, "_count")]],
+                list(month = page$month),
+                mean)
+  m$month<- as.Date(paste0(m$month, "-15"))
+  m$metric<- metric
+  return(m)
+}
+
+## Extract posts from Facebook
+page<- getPage("TED", token, n = 500)
+
+## Change the dates to R supported format
+page$datetime<- format.facebook.date(page$created_time)
+page$month<- format(page$datetime, "%Y-%m")
+
+## Use the aggregate function
+df.list<- lapply(c("likes", "comments", "shares"),
+                 aggregate.metric)
+df<- do.call(rbind, df.list)
+
+View(df)

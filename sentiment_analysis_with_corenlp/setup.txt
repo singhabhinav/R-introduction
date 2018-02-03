@@ -1,0 +1,11 @@
+Setup
+
+1. For setting up in R, please follow steps in CoreNLP.R (Install Java first)
+
+2. For setup in Python
+    + pip install pycorenlp
+    + Download stanford-corenlp-full-2017-06-09.zip from https://nlp.stanford.edu/software/stanford-corenlp-full-2017-06-09.zip
+    + Unzip stanford-corenlp-full-2017-06-09.zip
+    + cd stanford-corenlp-full-2017-06-09
+    + java -mx5g -cp "*" edu.stanford.nlp.pipeline.StanfordCoreNLPServer -timeout 10000
+

@@ -8,4 +8,6 @@ Setup
     + Unzip stanford-corenlp-full-2017-06-09.zip
     + cd stanford-corenlp-full-2017-06-09
     + java -mx5g -cp "*" edu.stanford.nlp.pipeline.StanfordCoreNLPServer -timeout 10000
+    + Check if you are able to import pycorenlp
+        import pycorenlp
 

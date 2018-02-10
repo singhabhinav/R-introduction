@@ -147,3 +147,48 @@ df.list<- lapply(c("likes", "comments", "shares"),
 df<- do.call(rbind, df.list)
 
 View(df)
+
+# Spam detection
+
+page<- getPage("TED", token, n = 500)
+post_id<- head(page$id, n = 100)
+head(post_id, n=10)
+post_id<- as.matrix(post_id)
+
+allcomments <- ""
+for (i in 1:nrow(post_id))
+{
+  post<- getPost(post_id[i,], token, n = 1000, likes = FALSE, comments = TRUE)
+  comments<- post$comments
+  allcomments<- rbind(allcomments, comments)
+}
+
+View(allcomments)
+
+
+allcomments<- as.data.frame(allcomments)
+
+allcomments$chars<- ""
+allcomments$chars<- nchar(allcomments$message)
+
+allcomments$url<- ""
+allcomments$url<- grepl(".com", allcomments$message)
+allcomments$spam<- ""
+train<- allcomments[1:100,]
+test<- allcomments[101:nrow(allcomments),]
+
+write.csv(train,"comment-train.csv" )
+write.csv(test,"comment-test.csv")
+
+train<- read.csv("comment-train.csv" )
+test<- read.csv("comment-test.csv" )
+
+newTrain<- train[,c("likes_count", "chars", "url", "spam")]
+newTest<- test[,c("likes_count", "chars", "url", "spam")]
+
+glm.out = glm(spam ~ url, family=binomial, data=newTrain)
+
+
+prediction<- predict(glm.out, newTest, type = "response")
+newTest$spam<- prediction
+View(newTest)

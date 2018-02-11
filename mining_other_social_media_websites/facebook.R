@@ -11,25 +11,42 @@ library(Rfacebook)
 
 token <- ""
 
-me<- getUsers("", token, private_info = TRUE)
+# Get details of the user
+me<- getUsers("1819422961614232", token, private_info = TRUE)
+
+## Get user's name and hometown
 
 me$name
 
 me$hometown
 
+# A basic analysis of your network
+
 friends<- getFriends(token, simplify = FALSE)
+
+View(friends)
 
 head(friends) # To see few of your friends
 
+## Get friends data
+
 friends_data<- getUsers(friends$id, token, private_info = TRUE)
 
+## Get friends gender
+
 table(friends_data$gender)
+
+## Get language, location etc
 
 table(substr(friends_data$locale, 1, 2))
 
 table(substr(friends_data$locale, 4, 5))
 
+## Get relationship status
+
 table(friends_data$relationship_status)
+
+# Get like data
 
 likes<- getLikes(user="me", token=token)
 

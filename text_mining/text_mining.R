@@ -18,7 +18,7 @@ oauth_endpoint(authorize = "https://api.twitter.com/oauth",
                access = "https://api.twitter.com/oauth/access_token")
 
 #connect to API
-download.file(url='http://curl.haxx.se/ca/cacert.pem', destfile='cacert.pem')
+#download.file(url='http://curl.haxx.se/ca/cacert.pem', destfile='cacert.pem')
 reqURL <- 'https://api.twitter.com/oauth/request_token'
 accessURL <- 'https://api.twitter.com/oauth/access_token'
 authURL <- 'https://api.twitter.com/oauth/authorize'
@@ -29,12 +29,12 @@ consumerSecret="xxxxxx" #Replace with your consumerSecret
 accesstoken="xxxxxxx" #Replace with your accesstoken
 accesssecret="xxxxxx" #Replace with your accesssecret
 
-Cred <- OAuthFactory$new(consumerKey=consumerKey,
+#Cred <- OAuthFactory$new(consumerKey=consumerKey,
                          consumerSecret=consumerSecret,
                          requestURL=reqURL,
                          accessURL=accessURL,
                          authURL=authURL)
-Cred$handshake(cainfo = system.file('CurlSSL', 'cacert.pem', package = 'RCurl')) #There is URL in Console. You need to go to it, get code and enter it on Console
+#Cred$handshake(cainfo = system.file('CurlSSL', 'cacert.pem', package = 'RCurl')) #There is URL in Console. You need to go to it, get code and enter it on Console
 
 ##### Authorization PIN -DYNAMIC
 

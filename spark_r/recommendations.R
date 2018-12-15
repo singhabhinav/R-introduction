@@ -1,52 +1,46 @@
+
+## Initialiaze the environment
+
 Sys.setenv(SPARK_HOME = "/usr/hdp/current/spark2-client")
 
 library(SparkR, lib.loc = c(file.path(Sys.getenv("SPARK_HOME"), "R", "lib")))
 
 sparkR.session(appName = "SparkR-Recommendation")
 
-sc <- sparkR.session(master = "yarn-client")
+sparkR.session(master = "yarn-client")
 
-#customSchema <- structType(
- #   structField("userId", "integer"),
-  #  structField("movieId", "integer"),
-   # structField("rating", "double"),
-    #    structField("timestamp", "integer"),
-
-#)
-
-#csvPath = "/data/ml-20m/ratings.csv"
-#df <- read.df(csvPath, "csv", header = "false", inferschema="true", schema = customSchema, na.strings = "NA")
-#df <- read.df(csvPath, "csv", header = "true", inferschema="true", na.strings = "NA")
-
-#printSchema(df)
-#createOrReplaceTempView(test, "test")
-#teenagers <- sql("SELECT count(*) from test")
-#head(teenagers)
-
+# Create custom schema for the data
 
 customSchema <- structType(
    structField("userId", "integer"),
    structField("movieId", "integer"),
    structField("rating", "double"))
+
+# Load the CSV file using the custom schema
+
 csvPath = "/data/ml-1m/user_ratings.csv"
 df <- read.df(csvPath, "csv", header = "false", schema = customSchema, na.strings = "NA")
 printSchema(df)
 
+# Split into training and test set
 
-training <- df
-test <- df
+df_list <- randomSplit(df, c(8,2), 2)
+training <- df_list[[1]]
+test <- df_list[[2]]
+
+# Fit the model
+
+# maxIter is the maximum number of iterations to run (defaults to 10).
+# regParam specifies the regularization parameter in ALS (defaults to 1.0)
+
 model <- spark.als(training, maxIter = 5, regParam = 0.01, userCol = "userId",
                    itemCol = "movieId", ratingCol = "rating")
 
-
-#createOrReplaceTempView(training, "training")
-
-#teenagers <- sql("SELECT count(*) from training")
-#head(teenagers)
-
+# Check the summary of the model
 
 summary(model)
 
-predictions <- predict(model, test)
+# Evaluate the model's performance
 
+predictions <- predict(model, test)
 head(predictions)

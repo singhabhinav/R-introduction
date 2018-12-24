@@ -8,8 +8,6 @@ library(RWeka)
 
 # Set working directory
 
-setwd("/Users/abhinav/work/R-introduction/")
-
 # Access only positive reviews
 
 path = "./text_mining/dataset/movie_reviews/txt_sentoken/pos"

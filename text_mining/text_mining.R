@@ -10,7 +10,6 @@ library(stringr)
 library(ggplot2)
 library(httr)
 library(wordcloud)
-library(sentiment)
 library(RCurl)
 library(syuzhet)
 

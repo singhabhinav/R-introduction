@@ -10,9 +10,17 @@ sparkR.session(master = "yarn-client")
 # Let's train logistic regression on mtcars which determines the
 # transmission type (am) by the horsepower (hp) and weight (wt)
 
+
+
+# Get the dataset information
+
 ?mtcars
 
+# Check the first few rows of the dataset
+
 head(mtcars)
+
+# Create R Dataframe
 
 dataset <- as.data.frame(mtcars)
 head(dataset)

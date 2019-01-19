@@ -1,14 +1,6 @@
-
-# coding: utf-8
-
-# In[2]:
-
-
 import networkx as nx
 
-
-# In[3]:
-
+# Symmetric Networks
 
 G_symmetric = nx.Graph()
 G_symmetric.add_edge('Amitabh Bachchan','Abhishek Bachchan')
@@ -21,16 +13,16 @@ G_symmetric.add_edge('Abhishek Bachchan','Dev Anand')
 G_symmetric.add_edge('Dev Anand','Aamir Khan')
 
 
-# In[4]:
-
+# %matplotlib inline
 
 get_ipython().magic('matplotlib inline')
+
+# Draw Symmetric Network
 
 nx.draw_networkx(G_symmetric)
 
 
-# In[5]:
-
+# Asymmetric Networks
 
 G_asymmetric = nx.DiGraph()
 G_asymmetric.add_edge('A','B')
@@ -39,15 +31,13 @@ G_asymmetric.add_edge('C','A')
 G_asymmetric.add_edge('D','E')
 
 
-# In[6]:
-
+# Draw Asymmetric Network
 
 nx.spring_layout(G_asymmetric)
 nx.draw_networkx(G_asymmetric)
 
 
-# In[7]:
-
+# Weighted Networks
 
 G_weighted = nx.Graph()
 G_weighted.add_edge('Amitabh Bachchan','Abhishek Bachchan', weight=10)
@@ -59,76 +49,47 @@ G_weighted.add_edge('Abhishek Bachchan','Akshay Kumar',weight=7)
 G_weighted.add_edge('Abhishek Bachchan','Dev Anand', weight=1)
 G_weighted.add_edge('Dev Anand','Aaamir Khan',weight=1)
 
+# Draw Weighted Network
 
-# In[8]:
+nx.draw_networkx(G_weighted)
 
+
+# Network Connectivity - Degree
 
 nx.degree(G_symmetric, 'Dev Anand')
 
-
-# In[9]:
-
-
-nx.degree(G_asymmetric, 'D')
-
-
-# In[10]:
-
+# Network Connectivity - Local Clustering Coefficient
 
 nx.clustering(G_symmetric, 'Aamir Khan')
 
-
-# In[11]:
-
+# Network Connectivity - Average Clustering Coefficient
 
 nx.average_clustering(G_symmetric)
 
-
-# In[12]:
-
+# Network Connectivity - Distance
 
 nx.shortest_path(G_symmetric, 'Dev Anand', 'Akshay Kumar')
 
-
-# In[13]:
-
+# Network Influencers - Degree Centrality
 
 nx.degree_centrality(G_symmetric)
 
-
-# In[14]:
-
+# Network Influencers - Eigenvector Centrality
 
 nx.eigenvector_centrality(G_symmetric)
 
-
-# In[15]:
-
+# Network Influencers - Betweenness Centrality
 
 betCent = nx.betweenness_centrality(G_symmetric)
-betCent
-
-
-# In[16]:
-
 
 sorted(betCent, key=betCent.get, reverse=True)[:5]
 
-
-# In[17]:
-
+# Aggregated network of ten individuals’ Facebook friends list
 
 G_fb = nx.read_edgelist("facebook_combined.txt", create_using = nx.Graph(), nodetype=int)
 
-
-# In[18]:
-
-
 nx.info(G_fb)
 
-
-# In[19]:
-
+betCent = nx.betweenness_centrality(G_fb)
 
 sorted(betCent, key=betCent.get, reverse=True)[:5]
-

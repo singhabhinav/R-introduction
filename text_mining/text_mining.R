@@ -12,6 +12,7 @@ library(httr)
 library(wordcloud)
 library(RCurl)
 library(syuzhet)
+library(tm)
 
 oauth_endpoint(authorize = "https://api.twitter.com/oauth",
                access = "https://api.twitter.com/oauth/access_token")

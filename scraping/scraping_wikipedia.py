@@ -60,13 +60,20 @@ G = [] # The Former capital
 for row in right_table.findAll("tr"):
     cells = row.findAll('td')
     states = row.findAll('th') #To store second column data
-    if len(cells) == 5:
-        A.append(states[0].find(text=True).rstrip())
-        B.append(states[1].find(text=True).rstrip())
-        C.append(cells[0].find(text=True).rstrip())
-        D.append(cells[1].find(text=True).rstrip())
-        E.append(cells[2].find(text=True).rstrip())
-        F.append(cells[3].find(text=True).rstrip())
-        G.append(cells[4].find(text=True).rstrip())
+  
+    if 0 < len(cells):
+        A.append(cells[0].find(text=True).rstrip())
+    if 0 < len(states):
+        B.append(states[0].find(text=True).rstrip())
+    if 1 < len(cells):
+        C.append(cells[1].find(text=True).rstrip())
+    if 2 < len(cells):
+        D.append(cells[2].find(text=True).rstrip())
+    if 3 < len(cells):
+        E.append(cells[3].find(text=True).rstrip())
+    if 4 < len(cells):
+        F.append(cells[4].find(text=True).rstrip())
+    if 5 < len(cells):
+        G.append(cells[5].find(text=True).rstrip())
 print(A)
 
